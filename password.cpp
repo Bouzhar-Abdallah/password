@@ -4,37 +4,26 @@
 #include <string.h>
 #include <unistd.h>
 
-int main() {
-	int i,a=0,b=0,c=0,t=0;
-    char password[20];
-    printf( "Enter a password that contains a capital, symbol, and a number \n" );
+char * passwordV() {
+	int i,a=0,b=0,c=0;
+    static char password[20];
+    
+    start:
+    	
+    printf( "Enter a password that contains a capital, symbol and a number \n" );
     scanf( "%s", password );
     
-        start:
-        	switch (t)
-        	{
-        		case 1 : {system("CLS");printf( "password too long please do not exceed 20 character \n" );scanf( "%s", password );} break;
-        		
-        		case 2 : {system("CLS");printf( "password too short minimum is 8 characters \n" );scanf( "%s", password );}break;
-        		
-        		case 3 : {system("CLS");printf( "password is weak please try again \n" );scanf( "%s", password );}break;
-        		
-        		case 4 : {system("CLS");printf( "password need atleast one digit \n" );scanf( "%s", password );}break;
-        		
-        		case 5 : {system("CLS");printf( "password need atleast one capital letter \n" );scanf( "%s", password );}break;
-        		
-        		case 6 : {system("CLS");printf( "password need atleast one symbol \n" );scanf( "%s", password );}break;
-			}
+    /****** test if password is between 8 and 20 caracters *******/
     
+		while(strlen(password)>20 || strlen(password)<8){
+			if(strlen(password)>20)
+			{printf( "password too long please do not exceed 20 character \n" );scanf( "%s", password );}
+			else {printf( "password too short minimum is 8 characters \n" );scanf( "%s", password );}
+		goto start;
+		}
 
-    
-while(strlen(password)>20 || strlen(password)<8){
-	if(strlen(password)>20)
-	{t=1;printf( "password too long please do not exceed 20 character \n" );scanf( "%s", password );}
-	else {t=2;printf( "password too short minimum is 8 characters \n" );scanf( "%s", password );}
-//goto start;
-}
 
+	/******check if password coantains a numbre, a capital and a symbol*******/
     for(i=0; i<strlen(password);i++)
 	    {
 			if (isdigit(password[i]))
@@ -50,21 +39,31 @@ while(strlen(password)>20 || strlen(password)<8){
 								c++;  		}
 		}
 		
-if (a>0 && b>0 && c>0){
-	    printf( "your password is strong\n");
-	printf( "%d-%d-%d-%d\n",a,b,c,strlen(password));
+	/*****password fulfills criteria ******/
 	
+if (a>0 && b>0 && c>0){
+	    printf( "your password is strong\n");	
 }
+	/*****password doesn't fulfill criteria ******/
 
 	else 
-	{  printf( "your password is weak\n");
-	//	system("CLS");
-		t=3;
-		if(a=0) {t=4;printf( "password need atleast one digit \n" );	}
-		if (b=0) {t=5;printf( "password need atleast one capital letter \n" ); }
-		if (c=0) {t=6; printf( "password need atleast one symbol \n" );	}
-	//sleep(10);
+	{  
+		if (a==0) printf( "password need atleast one digit \n" );	
+		if (b==0) printf( "password need atleast one capital letter \n" ); 
+		if (c==0) printf( "password need atleast one symbol \n" );	
+	sleep(5);
+	system("CLS");
 	goto start;
 	}
-    return 0;
+//	char *password = malloc(10);
+    return password;
+    
+}
+
+
+
+int main(){
+
+	printf("%s",passwordV());
+	return 0;
 }
