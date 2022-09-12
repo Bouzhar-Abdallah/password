@@ -3,11 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-struct user {
+
+typedef struct user {
 		int id;
-		char first_name[10];
-		char last_name[10];
-		char login[];
+		char login[100];
+		char first_name[50];
+		char last_name[50];
+		
 	//	char* password;
 	}u;
 
@@ -49,7 +51,8 @@ char * passwordV() {
 	/*****password fulfills criteria ******/
 	
 if (a>0 && b>0 && c>0){
-	    printf( "your password is strong\n");	
+	    printf( "your password is strong\n");
+	
 }
 	/*****password doesn't fulfill criteria ******/
 
@@ -67,16 +70,41 @@ if (a>0 && b>0 && c>0){
 }
 
 
-void singup(){
-	int length=0,j=0;
-	printf("\n\n\n\n\nentrez fotre prenom\n");
-	gets(u.first_name);
-	printf("\n\n\n\n\nentrez fotre nom\n");
-	gets(u.last_name);
+
+void singup(int id){
+	struct user u;
+
+	//int length=0,j=0;
+
 	
+	printf("\n\n\n\n\nentrez fotre prenom\n");
+	scanf("%s",u.first_name);
+
+	
+	printf("\n\n\n\n\nentrez fotre nom\n");
+	scanf("%s",u.last_name);
+    
+	
+	strcpy(u.login, u.first_name);
+    strcat(u.login,".");
+    strcat(u.login,u.last_name);
+    
+    
+	u.id=id;
+	 FILE *fptr;
+   fptr = fopen("users.txt","w");
+
+   fwrite (&u, sizeof(struct user), 1, fptr);
+   printf("%d",sizeof(struct user));
+  // fprintf(fptr,"%s",u);
+   fclose(fptr);
+   
+	
+/*
 	//writing first name into login
  	for (length=0; u.first_name[length] != '\0';++length) {
     u.login[length] = u.first_name[length];}
+    
     //adding a '.' between first name and last name into login
     u.login[length]= '.';
     length++;
@@ -85,19 +113,19 @@ void singup(){
 	for (j=0; u.last_name[j] != '\0';++j,length++) {
     u.login[length] = u.last_name[j];}
     u.login[length]= '\0';
-    puts(u.first_name);
-    puts(u.last_name);
-    puts(u.login);
+    
+	*/
+
 	
-}	
+}
 
 int main(){
 			int a=0;
 		
-			printf("\n\n\n\n\n1: to sign up\n2: to log-in\n");
-			scanf(" %d",&a);
-			fflush(stdin);
-		while(a!=1 &&a!=2){
+		printf("\n\n\n\n\n1: to sign up\n2: to log-in\n");
+		scanf(" %d",&a);
+		fflush(stdin);
+			while(a!=1 &&a!=2){
 			system("CLS");
 			printf("\n\n\nvieuller entrez 1 ou 2\n\n");
 			printf("1: to sign up\n2: to log-in\n");
@@ -105,11 +133,11 @@ int main(){
 		}
 				if(a==1){
 					system("CLS");
-					singup();
+					singup(1);
 				}else{
-				//	login();
+					passwordV();
 				}
-			//	printf("%s",passwordV());
+
 				return 0;
 }
 
