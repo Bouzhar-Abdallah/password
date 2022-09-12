@@ -69,11 +69,14 @@ if (a>0 && b>0 && c>0){
     
 }
 
-
+int find_current_id(){
+	
+//	return id;
+}
 
 void singup(int id){
 	struct user u;
-
+id+=2;
 	//int length=0,j=0;
 
 	
@@ -92,11 +95,9 @@ void singup(int id){
     
 	u.id=id;
 	 FILE *fptr;
-   fptr = fopen("users.txt","w");
+   fptr = fopen("users.txt","a");
 
-   fwrite (&u, sizeof(struct user), 1, fptr);
-   printf("%d",sizeof(struct user));
-  // fprintf(fptr,"%s",u);
+	fprintf(fptr, "id:%d %s %s %s\n",u.id, u.first_name,u.last_name, u.login);
    fclose(fptr);
    
 	
