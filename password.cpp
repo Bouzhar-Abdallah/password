@@ -3,17 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-typedef struct user {
+FILE *fptr;
+struct users {
 		int id;
 		char login[100];
 		char first_name[50];
 		char last_name[50];
 		
 	//	char* password;
-	}u;
+	};
 
 char * passwordV() {
+	
 	int i,a=0,b=0,c=0;
     static char password[20];
     
@@ -70,50 +71,73 @@ if (a>0 && b>0 && c>0){
 }
 
 int find_current_id(){
-	
-//	return id;
+			
+	int id;
+
+	fptr = fopen("users.txt","r");
+	    if (fptr != NULL)
+    {
+        // On peut lire et écrire dans le fptr
+        fseek(fptr, 0, SEEK_END);
+       
+       do{
+        fseek(fptr, -2, SEEK_CUR);
+        //lettre =fgetc(fptr);
+		//printf("%c\n",lettre);
+		}while(fgetc(fptr)!='#');
+		//printf("id : %c",fgetc(fptr));
+id=(int)fgetc(fptr);id++;
+    }
+    else
+    {
+       
+        printf("Impossible d'ouvrir le fptr test.txt");
+    }
+
+//	printf("id is :%d\n",id);
+	return id;
 }
 
 void singup(int id){
-	struct user u;
-id+=2;
+struct users user;
+
 	//int length=0,j=0;
 
 	
 	printf("\n\n\n\n\nentrez fotre prenom\n");
-	scanf("%s",u.first_name);
+	scanf("%s",user.first_name);
 
 	
 	printf("\n\n\n\n\nentrez fotre nom\n");
-	scanf("%s",u.last_name);
+	scanf("%s",user.last_name);
     
 	
-	strcpy(u.login, u.first_name);
-    strcat(u.login,".");
-    strcat(u.login,u.last_name);
+	strcpy(user.login, user.first_name);
+    strcat(user.login,".");
+    strcat(user.login,user.last_name);
     
     
-	u.id=id;
-	 FILE *fptr;
+	user.id=id;
+	 //FILE *fptr;
    fptr = fopen("users.txt","a");
 
-	fprintf(fptr, "id:%d %s %s %s\n",u.id, u.first_name,u.last_name, u.login);
+	fprintf(fptr, "#%d %s %s %s\n",user.id, user.first_name,user.last_name, user.login);
    fclose(fptr);
    
 	
 /*
 	//writing first name into login
- 	for (length=0; u.first_name[length] != '\0';++length) {
-    u.login[length] = u.first_name[length];}
+ 	for (length=0; user.first_name[length] != '\0';++length) {
+    user.login[length] = user.first_name[length];}
     
     //adding a '.' between first name and last name into login
-    u.login[length]= '.';
+    user.login[length]= '.';
     length++;
     
 	//writing last name into login
-	for (j=0; u.last_name[j] != '\0';++j,length++) {
-    u.login[length] = u.last_name[j];}
-    u.login[length]= '\0';
+	for (j=0; user.last_name[j] != '\0';++j,length++) {
+    user.login[length] = user.last_name[j];}
+    user.login[length]= '\0';
     
 	*/
 
@@ -134,7 +158,9 @@ int main(){
 		}
 				if(a==1){
 					system("CLS");
-					singup(1);
+					int id=find_current_id();
+			
+					singup(id);
 				}else{
 					passwordV();
 				}
