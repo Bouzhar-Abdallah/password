@@ -9,8 +9,7 @@ struct users {
 		char login[40];
 		char first_name[20];
 		char last_name[20];
-		
-	//	char* password;
+		char* password;
 	};
 /*
 int read_stdin(char *chaine, int size)
@@ -34,6 +33,29 @@ int read_stdin(char *chaine, int size)
 }
 
 */
+
+int find_login(char * login){//working with gets to read input
+			
+	int id=1;
+
+	fptr = fopen("users.txt","r");
+	    if (fptr != NULL)
+    {
+        // On peut lire et écrire dans le fptr
+        fseek(fptr, 0, SEEK_CUR);
+       char *strstr(fptr,login);
+       do{
+        fseek(fptr, -2, SEEK_CUR);
+		}while(fgetc(fptr)!='#');
+		fscanf(fptr,"%d",&id);
+		id++;
+    }
+    else
+    {
+        printf("Impossible d'ouvrir le fptr test.txt");
+    }
+	return id;
+}
 
 char * passwordV() {//working
 	
@@ -114,31 +136,28 @@ int find_current_id(){//working with gets to read input
 	return id;
 }
 
-void singup(int id){
+void singup(int id){//working
 struct users user;
 
 	printf("id is :%d\n",id);
 	printf("\n\n\n\n\nentrez votre prenom\n");
-	//fgets(user.first_name,10,stdin);
 	gets(user.first_name);
 
 	
 	printf("\n\n\n\n\nentrez fotre nom\n");
-//	scanf("%s",&user.last_name);
-//	fgets(user.last_name,10,stdin);
     gets(user.last_name);
 	
 	strcpy(user.login, user.first_name);
     strcat(user.login,".");
     strcat(user.login,user.last_name);
-    
-    
-	user.id=id;
-	 //FILE *fptr;
-   fptr = fopen("users.txt","a");
+    user.id=id;
+	
+	user.password=passwordV();
+	
+	fptr = fopen("users.txt","a");
 
-	fprintf(fptr, "#%d %s %s %s",user.id, user.first_name,user.last_name, user.login);
-   fclose(fptr);
+	fprintf(fptr, "#%d %s %s %s %s",user.id, user.first_name,user.last_name, user.login, user.password);
+	fclose(fptr);
    
 	
 /*
@@ -160,6 +179,18 @@ struct users user;
 	
 }
 
+void login(){
+	users userl;
+	printf("\n\n\n\n\nentrez votre login sous la forme prenom.nom\n");
+	gets(userl.login);
+	find_login(userl.login);
+	printf("\n\n\n\n\nentrez votre mot de passe\n");
+	gets(userl.password);
+	
+	
+	
+}
+
 int main(){
 			int a=0;
 		
@@ -175,10 +206,9 @@ int main(){
 				if(a==1){
 					system("CLS");
 					int id=find_current_id();
-			
 					singup(id);
 				}else{
-					passwordV();
+					login();
 				}
 
 				return 0;
