@@ -6,14 +6,36 @@
 FILE *fptr;
 struct users {
 		int id;
-		char login[100];
-		char first_name[50];
-		char last_name[50];
+		char login[40];
+		char first_name[20];
+		char last_name[20];
 		
 	//	char* password;
 	};
+/*
+int read_stdin(char *chaine, int size)
+{
+    char *positionEntree = NULL;
+ 
+    // On lit le texte saisi au clavier
+    if (fgets(chaine, size, stdin) != NULL)  // Pas d'erreur de saisie ?
+    {
+        positionEntree = strchr(chaine, '\n'); // On recherche l'"Entrée"
+        if (positionEntree != NULL) // Si on a trouvé le retour à la ligne
+        {
+            *positionEntree = '\0'; // On remplace ce caractère par \0
+        }
+        return *chaine; // On renvoie 1 si la fonction s'est déroulée sans erreur
+    }
+    else
+    {
+        return 'error'; // On renvoie 0 s'il y a eu une erreur
+    }
+}
 
-char * passwordV() {
+*/
+
+char * passwordV() {//working
 	
 	int i,a=0,b=0,c=0;
     static char password[20];
@@ -69,10 +91,9 @@ if (a>0 && b>0 && c>0){
     return password;
     
 }
-
-int find_current_id(){
+int find_current_id(){//working with gets to read input
 			
-	int id;
+	int id=1;
 
 	fptr = fopen("users.txt","r");
 	    if (fptr != NULL)
@@ -82,35 +103,30 @@ int find_current_id(){
        
        do{
         fseek(fptr, -2, SEEK_CUR);
-        //lettre =fgetc(fptr);
-		//printf("%c\n",lettre);
 		}while(fgetc(fptr)!='#');
-		//printf("id : %c",fgetc(fptr));
-id=(int)fgetc(fptr);id++;
+		fscanf(fptr,"%d",&id);
+		id++;
     }
     else
     {
-       
         printf("Impossible d'ouvrir le fptr test.txt");
     }
-
-//	printf("id is :%d\n",id);
 	return id;
 }
 
 void singup(int id){
 struct users user;
 
-	//int length=0,j=0;
-
-	
-	printf("\n\n\n\n\nentrez fotre prenom\n");
-	scanf("%s",user.first_name);
+	printf("id is :%d\n",id);
+	printf("\n\n\n\n\nentrez votre prenom\n");
+	//fgets(user.first_name,10,stdin);
+	gets(user.first_name);
 
 	
 	printf("\n\n\n\n\nentrez fotre nom\n");
-	scanf("%s",user.last_name);
-    
+//	scanf("%s",&user.last_name);
+//	fgets(user.last_name,10,stdin);
+    gets(user.last_name);
 	
 	strcpy(user.login, user.first_name);
     strcat(user.login,".");
@@ -121,7 +137,7 @@ struct users user;
 	 //FILE *fptr;
    fptr = fopen("users.txt","a");
 
-	fprintf(fptr, "#%d %s %s %s\n",user.id, user.first_name,user.last_name, user.login);
+	fprintf(fptr, "#%d %s %s %s",user.id, user.first_name,user.last_name, user.login);
    fclose(fptr);
    
 	
